@@ -1,0 +1,55 @@
+# ------------------------------
+# Python bytecode
+# ------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+
+# ------------------------------
+# Virtual environments
+# ------------------------------
+myenv/
+venv/
+env/
+.venv/
+
+# ------------------------------
+# Logs and temp files
+# ------------------------------
+*.log
+*.tmp
+*.bak
+*.swp
+*.swo
+*.DS_Store
+
+# ------------------------------
+# LLM / model files
+# ------------------------------
+*.xml
+*.html
+*.bin
+*.pt
+*.pth
+*.ckpt
+
+# ------------------------------
+# IDE / Editor
+# ------------------------------
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# ------------------------------
+# Jupyter Notebooks checkpoints
+# ------------------------------
+.ipynb_checkpoints/
+
+# ------------------------------
+# Distribution / build
+# ------------------------------
+build/
+dist/
+*.egg-info/
+.eggs/
