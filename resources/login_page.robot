@@ -1,34 +1,65 @@
 *** Settings ***
-Library    SeleniumLibrary
 Library    ../driver_service.py
+Library    String
+Resource    gui_action_keywords.robot
+Library    SeleniumLibrary    screenshot_on_failure=False
 
 *** Variables ***
 ${URL}               https://opensource-demo.orangehrmlive.com/web/index.php/auth/login
-${USERNAME_FIELD}    xpath=//input[@name='username']
+${USERNAME_FIELD}    xpath=//input[@name='username123']
 ${PASSWORD_FIELD}    xpath=//input[@name='password']
 ${SIGN_IN}           xpath=//button[@type='submit']    
-${DASHBOARD_LOGO}      xpath=//*[@id="app"]/div[1]/div[1]/header/div[1]/div[1]/span/h6
+${DASHBOARD_LOGO}    xpath=//*[@id="app"]/div[1]/div[1]/header/div[1]/div[1]/span/h6
  
 
 *** Keywords ***
-Open Login Page
+Kw Open Login Page
     ${service}=    Get Chrome Service
     Open Browser    ${URL}    chrome    service=${service}
     sleep           15s
     Maximize Browser Window   
 
-Input Username    
-    [Arguments]    ${username}
-    sleep          10s
-    Input Text     ${USERNAME_FIELD}    ${username}
 
-Input Password    
-    [Arguments]   ${password}
-    Input Text    ${PASSWORD_FIELD}    ${password}
+# Kw Input Username  
+#     [Arguments]    ${username_value}
+#     KW Input Text with self healing    ${USERNAME_FIELD}    ${username_value}
 
-Click Login Button
-    Click element    ${SIGN_IN}
-    Wait Until Page Contains Element    ${DASHBOARD_LOGO}    15s
+Kw input username 
+    [Arguments]    ${username_value}
+    KW Input Text with self healing    ${USERNAME_FIELD}    ${username_value}
 
-closing all browsers
-    Close Browser
+
+Kw input password 
+    [Arguments]    ${password_value}
+    KW Input Text with self healing    ${PASSWORD_FIELD}    ${password_value}
+
+kW click login button
+    KW Click Button with self healing    ${SIGN_IN}    
+    sleep           20s
+
+
+# Kw Input Password    
+#     [Arguments]   ${password}
+#     Input Text    ${PASSWORD_FIELD}    ${password}
+
+# Kw Click Login Button
+#     Click Button    ${SIGN_IN}    
+
+# Kw Verify Successful Login
+#     Wait Until Element Is Visible    ${DASHBOARD_LOGO}    timeout=20s
+#     Element Should Be Visible        ${DASHBOARD_LOGO}
+    
+# kW Get Page Source
+#     ${page_source}=    Get Source
+#     [Return]    ${page_source}    
+
+# Kw Close All Browsers
+#     Close All Browsers
+
+
+# Kw Get Locator Details
+#     [Arguments]    ${locator}
+#     ${locator_type}    ${locator_value}=    Split String    ${locator}    =   1
+#     Log To Console    Locator Type: ${locator_type}
+#     Log To Console    Locator Value: ${locator_value}
+#     [Return]    ${locator_type}    ${locator_value}    

@@ -1,0 +1,12 @@
+{
+    "provider": "local",
+    "apikey": "",
+    "baseurl": "http://localhost:11434",
+    "endpoint": "/api/generate",
+    "stream": false,
+    "model": "qwen3:4b",
+    "model1": "qwen3-coder:480b-cloud",
+    "temperature": 0.1,
+    "max_tokens": 1000,
+    "timeout": 600
+}

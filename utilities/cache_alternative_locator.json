@@ -1,0 +1,14 @@
+[
+    {
+        "xpath": "//input[@name='username']"
+    },
+    {
+        "xpath": "//input[@name='password']"
+    },
+    {
+        "xpath": ""
+    },
+    {
+        "xpath": "//button[@type='submit']"
+    }
+]

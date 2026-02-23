@@ -3,3 +3,5 @@ robotframework-seleniumlibrary
 selenium
 webdriver-manager
 requests
+robotframework-jsonlibrary
+JSONLibrary
