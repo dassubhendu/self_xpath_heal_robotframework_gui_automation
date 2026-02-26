@@ -86,86 +86,110 @@ KW Perform Action With Self Healing
                 ${working_locator}=    Create Dictionary    ${locator_type}=${alt_locator}
                 Log To Console    Working locator dictionary: ${working_locator}
 
+                # =========================================================
+                # 🔥 SAVE WORKING LOCATOR TO DICTIONARY-BASED CACHE
+                # =========================================================
+
                 ${cache_file}=    Normalize Path
                 ...    ${EXECDIR}/utilities/cache_alternative_locator.json
 
                 Log To Console    Cache file path: ${cache_file}
 
-                ${exists}=    Run Keyword And Return Status
-                ...    File Should Exist    ${cache_file}
+                # ---------------------------------------------------------
+                # 1️⃣ Validate working locator
+                # ---------------------------------------------------------
+                ${keys}=    Get Dictionary Keys    ${working_locator}
+                ${size}=    Get Length    ${keys}
 
-                IF    ${exists}
-                    ${content}=    Get File    ${cache_file}
-                    ${stripped}=    Strip String    ${content}
-
-                    IF    $stripped == ''
-                        ${cache_list}=    Create List
-                    ELSE
-                        ${status}    ${loaded}=    Run Keyword And Ignore Error
-                        ...    Evaluate    __import__('json').loads($content)
-
-                        IF    '${status}' == 'PASS'
-
-                            ${is_list}=    Evaluate    isinstance($loaded, list)
-
-                            IF    ${is_list}
-                                ${cache_list}=    Set Variable    ${loaded}
-                            ELSE
-                                ${cache_list}=    Create List    ${loaded}
-                            END
-
-                        ELSE
-                            Log To Console    ⚠ Invalid JSON. Resetting cache.
-                            ${cache_list}=    Create List
-                        END
-                    END
-                ELSE
-                    ${cache_list}=    Create List
-                END
-
-                ${size}=    Get Length    ${working_locator}
                 IF    ${size} == 0
                     Log To Console    ⚠ Working locator empty. Skipping.
                     RETURN
                 END
 
-                ${keys}=    Get Dictionary Keys    ${working_locator}
                 ${locator_type}=    Get From List    ${keys}    0
                 ${new_value}=    Get From Dictionary    ${working_locator}    ${locator_type}
+
+                # ✅ FIX: Use $variable syntax (no quotes!)
+                IF    not $new_value or $new_value == 'None'
+                    Log To Console    ⚠ Locator value empty. Skipping.
+                    RETURN
+                END
 
                 Log To Console    Locator Type: ${locator_type}
                 Log To Console    Locator Value: ${new_value}
 
-                ${already_exists}=    Set Variable    False
+                # ---------------------------------------------------------
+                # 2️⃣ Extract original locator value (KEY)
+                # ---------------------------------------------------------
+                ${original_key}=    Set Variable    ${locator_value}
 
-                FOR    ${item}    IN    @{cache_list}
+                ${full_locator}=    Set Variable    ${locator_type}=${new_value}
 
-                    ${item_size}=    Get Length    ${item}
-                    IF    ${item_size} == 0
-                        Continue For Loop
+                # ---------------------------------------------------------
+                # 3️⃣ Load existing cache (dictionary)
+                # ---------------------------------------------------------
+                ${exists}=    Run Keyword And Return Status
+                ...    File Should Exist    ${cache_file}
+
+                IF    ${exists}
+
+                    ${content}=    Get File    ${cache_file}
+                    ${stripped}=    Strip String    ${content}
+
+                    IF    not $stripped
+                        ${cache_dict}=    Create Dictionary
+                    ELSE
+                        ${status}    ${loaded}=    Run Keyword And Ignore Error
+                        ...    Evaluate    __import__('json').loads($content)
+
+                        IF    $status == 'PASS' and isinstance($loaded, dict)
+                            ${cache_dict}=    Set Variable    ${loaded}
+                        ELSE
+                            Log To Console    ⚠ Invalid JSON or not dictionary. Resetting.
+                            ${cache_dict}=    Create Dictionary
+                        END
                     END
 
-                    ${item_keys}=    Get Dictionary Keys    ${item}
-                    ${item_type}=    Get From List    ${item_keys}    0
-                    ${item_value}=    Get From Dictionary    ${item}    ${item_type}
-
-                    IF    $item_type == $locator_type and $item_value == $new_value
-                        ${already_exists}=    Set Variable    True
-                        Exit For Loop
-                    END
-
-                END
-
-                IF    not ${already_exists}
-                    Append To List    ${cache_list}    ${working_locator}
-                    Log To Console    ✅ Locator added to cache.
                 ELSE
-                    Log To Console    ⚠ Locator already exists. Skipping append.
+                    ${cache_dict}=    Create Dictionary
                 END
 
-                ${updated_json}=    Evaluate
-                ...    __import__('json').dumps($cache_list, indent=4)
+                # ---------------------------------------------------------
+                # 4️⃣ Append locator under correct key
+                # ---------------------------------------------------------
+                ${key_exists}=    Run Keyword And Return Status
+                ...    Dictionary Should Contain Key    ${cache_dict}    ${original_key}
 
+                IF    ${key_exists}
+
+                    ${alt_list}=    Get From Dictionary
+                    ...    ${cache_dict}    ${original_key}
+
+                    ${already_exists}=    Evaluate
+                    ...    $full_locator in $alt_list
+
+                    IF    not ${already_exists}
+                        Append To List    ${alt_list}    ${full_locator}
+                        Log To Console    ✅ Added new alternative under existing key.
+                    ELSE
+                        Log To Console    ⚠ Locator already exists under this key.
+                    END
+
+                ELSE
+                    ${new_list}=    Create List    ${full_locator}
+                    Set To Dictionary    ${cache_dict}
+                    ...    ${original_key}=${new_list}
+
+                    Log To Console    ✅ Created new key and added locator.
+                END
+
+                # ---------------------------------------------------------
+                # 5️⃣ Save updated dictionary to file
+                # ---------------------------------------------------------
+                ${updated_json}=    Evaluate
+                ...    __import__('json').dumps($cache_dict, indent=4)
+
+                Remove File    ${cache_file}
                 Create File    ${cache_file}    ${updated_json}
 
                 Log To Console    ✅ Cache update complete.
