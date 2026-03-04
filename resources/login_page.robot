@@ -2,15 +2,14 @@
 Library    ../driver_service.py
 Library    String
 Resource    gui_action_keywords.robot
-Library    SeleniumLibrary    screenshot_on_failure=False
+#Library    SeleniumLibrary    screenshot_on_failure=False
+Library    SeleniumLibrary    run_on_failure=Nothing
 
 *** Variables ***
 ${URL}               https://opensource-demo.orangehrmlive.com/web/index.php/auth/login
 ${USERNAME_FIELD}    xpath=//input[@name='username123']
-${PASSWORD_FIELD}    xpath=//input[@name='password']
+${PASSWORD_FIELD}    xpath=//input[@name='password123']
 ${SIGN_IN}           xpath=//button[@type='submit']    
-${DASHBOARD_LOGO}    xpath=//*[@id="app"]/div[1]/div[1]/header/div[1]/div[1]/span/h6
- 
 
 *** Keywords ***
 Kw Open Login Page

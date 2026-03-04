@@ -1,9 +1,11 @@
 *** Settings ***
 Resource    ../resources/login_page.robot
+Resource    ../resources/dashboard_page.robot
 Library     SeleniumLibrary
 Library    ../utilities/LocalLLMClient.py
 Library    ../utilities/prompt_for_self_healed_locators.py
-Library    SeleniumLibrary    screenshot_on_failure=False
+#Library    SeleniumLibrary    screenshot_on_failure=False
+Library    SeleniumLibrary    run_on_failure=Nothing
 
 *** Variables ***
 ${USERNAME}     Admin
@@ -62,4 +64,4 @@ Test_alternative_locator_by_llm_004
     Kw input username  Admin
     Kw input password  admin123
     Kw Click Login Button
-    
+    Kw Verify Dashboard logo is visible

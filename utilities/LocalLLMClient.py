@@ -11,8 +11,8 @@ class LocalLLMClient:
     def __init__(self):
         pass
 
-    @keyword("Get LLM Response")
-    def get_llm_response(self,
+    @keyword("Get LLM Response Local")
+    def get_llm_response_local(self,
                          prompt: str,
                          config_path: str = "utilities/LocalLLMConfig.json") -> str:
         """

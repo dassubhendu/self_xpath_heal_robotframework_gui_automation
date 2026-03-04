@@ -1,8 +1,20 @@
 {
-    "//input[@name='username123']": [
-        "xpath=//input[@name='username']"
-    ],
-    "//input[@name='password123']": [
-        "xpath=//input[@name='password']"
-    ]
+    "xpath=//input[@name='username123']": {
+        "original_locator": "xpath=//input[@name='username123']",
+        "current_stable_locator": "//input[@name='username']",
+        "locator_history": [
+            "//input[@name='username']"
+        ],
+        "heal_count": "1",
+        "last_healed_on": "2026-03-04"
+    },
+    "xpath=//input[@name='password123']": {
+        "original_locator": "xpath=//input[@name='password123']",
+        "current_stable_locator": "//input[@name='password']",
+        "locator_history": [
+            "//input[@name='password']"
+        ],
+        "heal_count": "1",
+        "last_healed_on": "2026-03-04"
+    }
 }

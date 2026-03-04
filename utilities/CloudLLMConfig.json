@@ -1,0 +1,11 @@
+{
+    "provider": "cloud",
+    "apikey": "ebab6bb0e88b405b8c8bd091b223fcc3.xCuSCGNgti3uh8l-l0mncFai",
+    "baseurl": "https://api.ollama.com",
+    "endpoint": "/api/generate",
+    "stream": false,
+    "model": "qwen3-coder:480b-cloud",
+    "temperature": 0.1,
+    "max_tokens": 500,
+    "timeout": 600
+}
