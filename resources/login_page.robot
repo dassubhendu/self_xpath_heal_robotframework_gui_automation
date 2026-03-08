@@ -14,8 +14,11 @@ ${SIGN_IN}           xpath=//button[@type='submit']
 *** Keywords ***
 Kw Open Login Page
     ${service}=    Get Chrome Service
+    Log to console    Launching Chrome browser.
     Open Browser    ${URL}    chrome    service=${service}
     sleep           15s
+    Log to console    Browser launched successfully.
+    Log to console    Maximizing browser window.
     Maximize Browser Window   
 
 
