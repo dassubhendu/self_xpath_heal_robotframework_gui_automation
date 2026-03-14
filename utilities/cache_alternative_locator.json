@@ -6,7 +6,7 @@
             "//input[@name='username']"
         ],
         "heal_count": "1",
-        "last_healed_on": "2026-03-04"
+        "last_healed_on": "2026-03-13"
     },
     "xpath=//input[@name='password123']": {
         "original_locator": "xpath=//input[@name='password123']",
@@ -15,6 +15,6 @@
             "//input[@type='password' and @name='password']"
         ],
         "heal_count": "1",
-        "last_healed_on": "2026-03-08"
+        "last_healed_on": "2026-03-13"
     }
 }

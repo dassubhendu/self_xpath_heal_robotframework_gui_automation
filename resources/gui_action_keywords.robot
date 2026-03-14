@@ -168,15 +168,16 @@ KW Perform Action With Self Healing
     Log To Console    📜 Generated LLM Prompt
     Log To Console    ----------------------------------------------------------
     Log to console    ${resp_self_healed_prompt}
-
+    Log To Console    ----------------------------------------------------------
     Log To Console    🚀 Sending prompt to LLM service...
+    Log To Console    ----------------------------------------------------------
 
     ${resp_self_healed_locators_from_llm}=    Get LLM Response Cloud
     ...    ${resp_self_healed_prompt}
-
     Log To Console    📦 LLM Response Received
     Log To Console    Alternative locators JSON:
     Log To Console    ${resp_self_healed_locators_from_llm}
+    Log To Console    ----------------------------------------------------------
 
     ${locator_json}=    Evaluate
     ...    json.loads('''${resp_self_healed_locators_from_llm}''')    json
